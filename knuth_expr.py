@@ -1,3 +1,4 @@
+import argparse
 import math
 from enum import Enum, auto
 from queue import Queue
@@ -84,8 +85,9 @@ def BFS(problem: KnuthExpr) -> Union[Node, None]:
     return None # failed
 
 
-def main():
-    p = KnuthExpr(initial=3, goal=5)
+def main(argv):
+    assert argv.initial and argv.goal
+    p = KnuthExpr(initial=argv.initial, goal=argv.goal)
     node = BFS(p)
     if node:
         print(node.state)
@@ -95,4 +97,22 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Uninformed search algorithm for a Knuth's Expression")
+    parser.add_argument(
+        "-g",
+        "--goal",
+        type=int,
+        dest="goal",
+        required=True,
+        help="Goal state for the problem"
+    )
+    parser.add_argument(
+        "-i",
+        "--initial",
+        type=int,
+        dest="initial",
+        required=True,
+        help="Initial state for the problem"
+    )
+    ARGV = parser.parse_args()
+    main(ARGV)
